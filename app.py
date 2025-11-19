@@ -55,7 +55,11 @@ query3 = 'select a.*, name as ProviderName\
         from updated_wellness_providers a\
         left join [dbo].[tbl_ProviderList_stg] b\
         on a.code = b.code'
-query4 = 'SELECT * FROM tbl_enrollee_wellness_result_data'
+query4 = 'SELECT * FROM tbl_enrollee_wellness_result_data\
+        WHERE memberno IN (SELECT DISTINCT memberno\
+                            FROM tbl_annual_wellness_enrollee_data\
+                            WHERE PolicyEndDate >= DATEADD(MONTH, -3, GETDATE())\
+                            )'
 
 @st.cache_data(ttl = dt.timedelta(hours=4))
 def get_data_from_sql():
