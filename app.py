@@ -49,8 +49,8 @@ conn = pyodbc.connect(
 query1 = "SELECT * from vw_wellness_enrollee_portal_update"
 query2 = "select MemberNo, MemberName, Client, PolicyEndDate, email, state, selected_provider, Wellness_benefits, selected_date, selected_session, date_submitted,\
         IssuedPACode, PA_Tests, PA_Provider, PAIssueDate\
-        FROM tbl_annual_wellness_enrollee_data"
-        # where IssuedPACode is not null and PAIssueDate >= '2024-10-01'"
+        FROM tbl_annual_wellness_enrollee_data\
+        WHERE PolicyEndDate >= DATEADD(MONTH, -3, GETDATE())"
 query3 = 'select a.*, name as ProviderName\
         from updated_wellness_providers a\
         left join [dbo].[tbl_ProviderList_stg] b\
